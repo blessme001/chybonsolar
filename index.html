@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -8,511 +8,646 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-:root{
-  --bg:#0b0f0e;
-  --bg2:#111815;
-  --card:#161e1b;
-  --border:#1e2d28;
-  --green:#4cd964;
-  --green2:#3ab553;
-  --text:#dde8e2;
-  --muted:#6b8c7a;
-  --heading:'DM Serif Display',serif;
-  --body:'Be Vietnam Pro',sans-serif;
-}
-body{background:var(--bg);color:var(--text);font-family:var(--body);font-weight:300;line-height:1.7;overflow-x:hidden;font-size:15px}
+:root{--bg:#0b0f0e;--bg2:#111815;--card:#161e1b;--border:#1e2d28;--green:#4cd964;--green2:#3ab553;--text:#dde8e2;--muted:#6b8c7a;--heading:'DM Serif Display',serif;--body:'Be Vietnam Pro',sans-serif}
+[data-theme="light"]{--bg:#f4f7f5;--bg2:#eaf0ec;--card:#ffffff;--border:#d0ddd5;--text:#0e1a16;--muted:#4a6b58}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-weight:300;line-height:1.7;overflow-x:hidden;font-size:15px;transition:background .4s,color .4s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:2px}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--green);border-radius:2px}
+/* PRELOADER */
+#preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
+#preloader.done{opacity:0;visibility:hidden}
+.pre-logo{font-family:var(--heading);font-size:2.5rem;color:var(--text);margin-bottom:2rem;letter-spacing:2px}
+.pre-logo span{color:var(--green)}
+.pre-sun{width:64px;height:64px;margin-bottom:1.5rem;position:relative;display:flex;align-items:center;justify-content:center}
+.pre-core{width:22px;height:22px;background:var(--green);border-radius:50%;animation:pcore 1.4s ease-in-out infinite}
+@keyframes pcore{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.pre-ring{position:absolute;width:50px;height:50px;border:2px dashed rgba(76,217,100,.3);border-radius:50%;animation:spin 3s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pre-bar-wrap{width:220px;height:2px;background:var(--border);border-radius:1px}
+.pre-bar{height:100%;background:var(--green);width:0%;border-radius:1px}
+.pre-pct{font-size:11px;color:var(--muted);letter-spacing:2px;margin-top:.8rem}
 
-/* ── NAV ── */
+/* NAV */
 .nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:70px;transition:all .4s}
-.nav.scrolled{background:rgba(11,15,14,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav.scrolled{background:rgba(11,15,14,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+[data-theme="light"] .nav.scrolled{background:rgba(244,247,245,.97)}
 .nav-logo img{height:46px;object-fit:contain}
-.nav-logo .fallback{display:none;font-family:var(--heading);font-size:1.3rem;color:var(--text)}
-.nav-logo .fallback span{color:var(--green)}
-.nav-links{display:flex;gap:2.2rem;list-style:none}
-.nav-links a{font-size:13px;font-weight:500;letter-spacing:.5px;color:rgba(221,232,226,.7);text-decoration:none;transition:color .2s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--green);transition:width .3s}
-.nav-links a:hover{color:var(--green)}
-.nav-links a:hover::after{width:100%}
-.nav-btn{background:var(--green);color:#0b0f0e;font-family:var(--body);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.65rem 1.5rem;border:none;cursor:pointer;transition:all .25s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
-.nav-btn:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(76,217,100,.25)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
-.hamburger span{width:24px;height:2px;background:var(--text);transition:all .3s;display:block}
+.nav-fallback{display:none;font-family:var(--heading);font-size:1.3rem;color:var(--text)}
+.nav-fallback span{color:var(--green)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;letter-spacing:.5px;color:var(--muted);text-decoration:none;transition:color .2s;position:relative;padding-bottom:4px}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--green);transition:width .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--green)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:.8rem}
+.theme-btn{width:36px;height:36px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s}
+.theme-btn:hover{border-color:var(--green);color:var(--green)}
+.nav-btn{background:var(--green);color:#0b0f0e;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.65rem 1.4rem;border:none;cursor:pointer;transition:all .25s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.nav-btn:hover{background:var(--green2);transform:translateY(-2px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
+.hamburger span{width:22px;height:2px;background:var(--text);display:block;transition:all .3s}
+.mobile-menu{display:none;position:fixed;top:70px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);padding:1.2rem 5vw;z-index:199;flex-direction:column;gap:.8rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:14px;color:var(--muted);text-decoration:none;padding:.5rem 0;border-bottom:1px solid var(--border);transition:color .2s}
+.mobile-menu a:hover{color:var(--green)}
 
-/* ── HERO SLIDESHOW ── */
+/* HERO */
 .hero{position:relative;height:100vh;min-height:600px;overflow:hidden}
 .slides{position:absolute;inset:0}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;background-size:cover;background-position:center}
 .slide.active{opacity:1}
 .slide::before{content:'';position:absolute;inset:0;background:linear-gradient(110deg,rgba(11,15,14,.92) 40%,rgba(11,15,14,.5) 100%)}
-.slide-1{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-erod-photos-1023772446-20844067-1-scaled.jpg)}
-.slide-2{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-nc-farm-bureau-mark-15751120-scaled.jpg)}
-.slide-3{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/07/futuristic-solar-power-station-generates-electricity-sunset-generative-ai.jpg)}
-.slide-4{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/08/WhatsApp-Image-2024-07-27-at-00.02.03.jpeg)}
-
+.s1{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-erod-photos-1023772446-20844067-1-scaled.jpg)}
+.s2{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-nc-farm-bureau-mark-15751120-scaled.jpg)}
+.s3{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/07/futuristic-solar-power-station-generates-electricity-sunset-generative-ai.jpg)}
+.s4{background-image:url(https://chybonsolarenergy.com/wp-content/uploads/2024/08/WhatsApp-Image-2024-07-27-at-00.02.03.jpeg)}
+#pcanvas{position:absolute;inset:0;z-index:1;pointer-events:none}
 .hero-content{position:relative;z-index:5;height:100%;display:flex;flex-direction:column;justify-content:center;padding:0 5vw;max-width:760px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:.7rem;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .3s forwards}
-.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--green)}
-.hero-title{font-family:var(--heading);font-size:clamp(3.2rem,7.5vw,6.5rem);line-height:.92;color:var(--text);margin-bottom:1.5rem;opacity:0;animation:fadeUp .9s .5s forwards}
+.eyebrow{display:inline-flex;align-items:center;gap:.7rem;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .3s forwards}
+.eyebrow::before{content:'';width:32px;height:1px;background:var(--green)}
+.hero-title{font-family:var(--heading);font-size:clamp(3rem,7.5vw,6.5rem);line-height:.92;color:var(--text);margin-bottom:1.5rem;opacity:0;animation:fadeUp .9s .5s forwards}
 .hero-title em{color:var(--green);font-style:normal;display:block}
 .hero-sub{font-size:15px;color:var(--muted);max-width:440px;line-height:1.8;margin-bottom:2.5rem;opacity:0;animation:fadeUp .9s .7s forwards}
 .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .9s forwards}
-.btn-primary{background:var(--green);color:#0b0f0e;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.9rem 2.2rem;border:none;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
-.btn-primary:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(76,217,100,.3)}
-.btn-ghost{background:transparent;color:var(--text);font-weight:500;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.9rem 2.2rem;border:1px solid rgba(221,232,226,.3);cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block}
-.btn-ghost:hover{border-color:var(--green);color:var(--green)}
-
-/* Slide indicators */
-.slide-dots{position:absolute;bottom:2.5rem;left:5vw;z-index:10;display:flex;gap:.6rem;align-items:center}
+.btn-p{background:var(--green);color:#0b0f0e;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.9rem 2.2rem;border:none;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.btn-p:hover{background:var(--green2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(76,217,100,.3)}
+.btn-g{background:transparent;color:var(--text);font-weight:500;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.9rem 2.2rem;border:1px solid rgba(221,232,226,.3);cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block}
+.btn-g:hover{border-color:var(--green);color:var(--green)}
+.slide-dots{position:absolute;bottom:8.5rem;left:5vw;z-index:10;display:flex;gap:.6rem}
 .dot{width:28px;height:2px;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s}
 .dot.active{width:52px;background:var(--green)}
+.slide-ctr{position:absolute;bottom:8.5rem;right:5vw;z-index:10;font-family:var(--heading);font-size:.9rem;color:rgba(255,255,255,.4)}
+.slide-ctr span{color:var(--green);font-size:1.5rem}
+.hero-stats{position:absolute;bottom:0;left:0;right:0;z-index:10;display:flex;background:rgba(11,15,14,.88);backdrop-filter:blur(12px);border-top:1px solid var(--border)}
+.sstat{flex:1;padding:1.1rem .8rem;border-right:1px solid var(--border);text-align:center}
+.sstat:last-child{border-right:none}
+.sstat-n{font-family:var(--heading);font-size:1.9rem;color:var(--green);line-height:1;display:block}
+.sstat-l{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:.2rem;display:block}
 
-/* Slide counter */
-.slide-counter{position:absolute;bottom:2.5rem;right:5vw;z-index:10;font-family:var(--heading);font-size:1rem;color:rgba(255,255,255,.4)}
-.slide-counter span{color:var(--green);font-size:1.6rem}
-
-/* Hero stats strip */
-.hero-stats{position:absolute;bottom:0;left:0;right:0;z-index:10;display:flex;background:rgba(11,15,14,.85);backdrop-filter:blur(12px);border-top:1px solid var(--border)}
-.stat-item{flex:1;padding:1.2rem 2rem;border-right:1px solid var(--border);text-align:center}
-.stat-item:last-child{border-right:none}
-.stat-num{font-family:var(--heading);font-size:2.2rem;color:var(--green);line-height:1;display:block}
-.stat-label{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:.2rem;display:block}
-
-/* ── SCROLL REVEAL ── */
+/* REVEAL */
 .reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-50px);transition:all .9s cubic-bezier(.16,1,.3,1)}
-.reveal-left.visible{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(50px);transition:all .9s cubic-bezier(.16,1,.3,1)}
-.reveal-right.visible{opacity:1;transform:translateX(0)}
-.delay-1{transition-delay:.1s}
-.delay-2{transition-delay:.2s}
-.delay-3{transition-delay:.3s}
-.delay-4{transition-delay:.4s}
-.delay-5{transition-delay:.5s}
+.rl{opacity:0;transform:translateX(-50px);transition:all .9s cubic-bezier(.16,1,.3,1)}
+.rl.visible{opacity:1;transform:translateX(0)}
+.rr{opacity:0;transform:translateX(50px);transition:all .9s cubic-bezier(.16,1,.3,1)}
+.rr.visible{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-/* ── SECTION BASE ── */
+/* SECTIONS */
 section{padding:6rem 5vw}
-.section-tag{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem}
-.section-tag::before{content:'';display:inline-block;width:24px;height:1px;background:var(--green)}
-.section-title{font-family:var(--heading);font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;color:var(--text);margin-bottom:1.2rem}
+.stag{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem}
+.stag::before{content:'';display:inline-block;width:24px;height:1px;background:var(--green)}
+.stitle{font-family:var(--heading);font-size:clamp(2rem,4vw,3.4rem);line-height:1.05;color:var(--text);margin-bottom:1.2rem}
 
-/* ── ABOUT ── */
+/* ABOUT */
 .about{background:var(--bg2);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
-.about-img-wrap{position:relative}
-.about-img-wrap img{width:100%;height:520px;object-fit:cover;filter:brightness(.85);transition:filter .4s}
-.about-img-wrap:hover img{filter:brightness(1)}
-.about-badge{position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--green);color:#0b0f0e;padding:1.4rem 1.8rem;font-family:var(--heading);text-align:center;line-height:1.1}
-.about-badge strong{font-size:2.4rem;font-weight:400;display:block}
-.about-badge span{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
-.about-body p{color:var(--muted);margin-bottom:1.2rem;font-size:15px}
-.about-pills{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:2rem}
+.aimg{position:relative}
+.aimg img{width:100%;height:500px;object-fit:cover;filter:brightness(.85);transition:filter .4s}
+.aimg:hover img{filter:brightness(1)}
+.abadge{position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--green);color:#0b0f0e;padding:1.3rem 1.6rem;font-family:var(--heading);text-align:center;line-height:1.1}
+.abadge strong{font-size:2.3rem;font-weight:400;display:block}
+.abadge span{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.atext p{color:var(--muted);margin-bottom:1.2rem}
+.apills{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:2rem}
 .pill{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--green);padding:1rem 1.2rem;transition:all .25s}
-.pill:hover{background:rgba(76,217,100,.05);border-color:rgba(76,217,100,.3);transform:translateX(4px)}
+.pill:hover{background:rgba(76,217,100,.05);transform:translateX(4px)}
 .pill h4{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:.3rem}
 .pill p{font-size:12px;color:var(--muted);margin:0}
 
-/* ── SERVICES ── */
+/* SERVICES */
 .services{background:var(--bg)}
-.services-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.svc-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
 .svc{background:var(--bg2);padding:2.5rem 2rem;position:relative;overflow:hidden;cursor:pointer;transition:background .3s}
 .svc:hover{background:var(--card)}
 .svc-glow{position:absolute;top:-60px;right:-60px;width:120px;height:120px;background:radial-gradient(circle,rgba(76,217,100,.12) 0%,transparent 70%);opacity:0;transition:opacity .4s}
 .svc:hover .svc-glow{opacity:1}
 .svc-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--green);transition:width .4s}
 .svc:hover .svc-bar{width:100%}
-.svc-num{font-family:var(--heading);font-size:4rem;color:rgba(76,217,100,.05);position:absolute;top:.8rem;right:1.2rem;line-height:1;transition:color .3s}
-.svc:hover .svc-num{color:rgba(76,217,100,.12)}
+.svc-n{font-family:var(--heading);font-size:4rem;color:rgba(76,217,100,.05);position:absolute;top:.8rem;right:1.2rem;line-height:1}
 .svc-icon{width:48px;height:48px;border:1px solid rgba(76,217,100,.2);background:rgba(76,217,100,.06);display:flex;align-items:center;justify-content:center;margin-bottom:1.6rem;font-size:1.3rem;transition:all .3s}
 .svc:hover .svc-icon{background:rgba(76,217,100,.15);transform:scale(1.08)}
 .svc-title{font-weight:600;font-size:15px;color:var(--text);margin-bottom:.6rem}
 .svc-desc{font-size:13px;color:var(--muted);line-height:1.7}
 
-/* ── PHOTO GALLERY ── */
+/* GALLERY */
 .gallery{background:var(--bg2)}
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:200px 200px;gap:6px;margin-top:2.5rem}
-.gallery-item{position:relative;overflow:hidden;cursor:pointer}
-.gallery-item.tall{grid-row:span 2}
-.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.16,1,.3,1),filter .4s}
-.gallery-item:hover img{transform:scale(1.08);filter:brightness(.7)}
-.gallery-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(11,15,14,.4)}
-.gallery-item:hover .gallery-overlay{opacity:1}
-.gallery-zoom{width:44px;height:44px;border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:1.4rem;transform:scale(.7);transition:transform .3s}
-.gallery-item:hover .gallery-zoom{transform:scale(1)}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:200px 200px;gap:6px;margin-top:2.5rem}
+.gal-item{position:relative;overflow:hidden;cursor:pointer}
+.gal-item.tall{grid-row:span 2}
+.gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s,filter .4s}
+.gal-item:hover img{transform:scale(1.08);filter:brightness(.7)}
+.gal-over{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(11,15,14,.4)}
+.gal-item:hover .gal-over{opacity:1}
+.gal-zoom{width:44px;height:44px;border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green);font-size:1.4rem;transform:scale(.7);transition:transform .3s}
+.gal-item:hover .gal-zoom{transform:scale(1)}
+.lbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.lbox.open{display:flex}
+.lbox img{max-width:90vw;max-height:85vh;object-fit:contain;border:1px solid var(--border)}
+.lbox-close{position:absolute;top:1.5rem;right:1.5rem;width:44px;height:44px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all .2s}
+.lbox-close:hover{border-color:var(--green);color:var(--green)}
+.lbox-prev,.lbox-next{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;transition:all .2s}
+.lbox-prev{left:1.5rem}.lbox-next{right:1.5rem}
+.lbox-prev:hover,.lbox-next:hover{border-color:var(--green);color:var(--green)}
+.lbox-ctr{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);letter-spacing:2px}
 
-/* Lightbox */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
-.lightbox.open{display:flex}
-.lightbox-img{max-width:90vw;max-height:85vh;object-fit:contain;border:1px solid var(--border)}
-.lightbox-close{position:absolute;top:1.5rem;right:1.5rem;width:44px;height:44px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.lightbox-close:hover{border-color:var(--green);color:var(--green)}
-.lightbox-prev,.lightbox-next{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.lightbox-prev{left:1.5rem}
-.lightbox-next{right:1.5rem}
-.lightbox-prev:hover,.lightbox-next:hover{border-color:var(--green);color:var(--green)}
-.lightbox-counter{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);letter-spacing:2px}
+/* STATS BAND */
+.sband{background:var(--green);padding:4rem 5vw;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
+.bnum{font-family:var(--heading);font-size:3.5rem;color:#0b0f0e;line-height:1;display:block}
+.blbl{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(11,15,14,.65);margin-top:.4rem;display:block}
 
-/* ── STATS BAND ── */
-.stats-band{background:var(--green);padding:4rem 5vw;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
-.band-num{font-family:var(--heading);font-size:3.5rem;color:#0b0f0e;line-height:1;display:block}
-.band-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(11,15,14,.65);margin-top:.4rem;display:block}
-
-/* ── WHY US ── */
+/* WHY */
 .why{background:var(--bg);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center}
-.why-features{display:flex;flex-direction:column;gap:1rem}
-.feature{display:flex;gap:1.2rem;align-items:flex-start;padding:1.4rem;background:var(--card);border:1px solid var(--border);transition:all .3s;cursor:default}
-.feature:hover{border-color:rgba(76,217,100,.35);transform:translateX(6px);background:rgba(76,217,100,.03)}
-.feature-icon{width:44px;height:44px;background:rgba(76,217,100,.08);border:1px solid rgba(76,217,100,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:background .3s}
-.feature:hover .feature-icon{background:rgba(76,217,100,.18)}
-.feature h4{font-weight:600;font-size:14px;color:var(--text);margin-bottom:.3rem}
-.feature p{font-size:13px;color:var(--muted);line-height:1.6}
+.why-list{display:flex;flex-direction:column;gap:1rem}
+.feat{display:flex;gap:1.2rem;align-items:flex-start;padding:1.4rem;background:var(--card);border:1px solid var(--border);transition:all .3s}
+.feat:hover{border-color:rgba(76,217,100,.35);transform:translateX(6px)}
+.feat-icon{width:44px;height:44px;background:rgba(76,217,100,.08);border:1px solid rgba(76,217,100,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:background .3s}
+.feat:hover .feat-icon{background:rgba(76,217,100,.18)}
+.feat h4{font-weight:600;font-size:14px;color:var(--text);margin-bottom:.3rem}
+.feat p{font-size:13px;color:var(--muted);line-height:1.6}
 
-/* ── TESTIMONIALS ── */
-.testimonials{background:var(--bg2)}
-.testi-track-wrap{overflow:hidden;margin-top:2.5rem;position:relative}
-.testi-track{display:flex;gap:1.5rem;transition:transform .6s cubic-bezier(.16,1,.3,1)}
-.testi-card{min-width:calc(33.333% - 1rem);background:var(--card);border:1px solid var(--border);padding:2rem;flex-shrink:0;transition:border-color .3s}
-.testi-card:hover{border-color:rgba(76,217,100,.25)}
-.testi-stars{color:var(--green);font-size:.85rem;letter-spacing:2px;margin-bottom:.8rem}
-.testi-text{font-size:13px;color:var(--muted);font-style:italic;line-height:1.8;margin-bottom:1.4rem}
-.testi-author{display:flex;align-items:center;gap:.8rem}
-.testi-avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--green)}
-.testi-avatar img{width:100%;height:100%;object-fit:cover}
-.testi-name{font-weight:600;font-size:13px;color:var(--text)}
-.testi-role{font-size:11px;color:var(--muted)}
-.testi-controls{display:flex;gap:.8rem;margin-top:2rem;align-items:center}
-.testi-btn{width:40px;height:40px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:1rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.testi-btn:hover{border-color:var(--green);color:var(--green)}
-.testi-progress{flex:1;height:2px;background:var(--border);position:relative;overflow:hidden}
-.testi-progress-bar{height:100%;background:var(--green);width:33%;transition:width .4s}
+/* CALCULATOR */
+.calc{background:var(--bg2)}
+.calc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+.calc-form{background:var(--card);border:1px solid var(--border);padding:2rem}
+.calc-head{display:grid;grid-template-columns:1fr 80px 60px 60px 30px;gap:.6rem;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;padding:0 .2rem}
+.calc-row{display:grid;grid-template-columns:1fr 80px 60px 60px 30px;gap:.6rem;align-items:center;margin-bottom:.7rem}
+.calc-row input,.calc-row select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.55rem .6rem;font-family:var(--body);font-size:13px;width:100%;transition:border-color .2s}
+.calc-row input:focus,.calc-row select:focus{outline:none;border-color:var(--green)}
+.calc-row select option{background:var(--bg)}
+.calc-rm{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:color .2s;line-height:1}
+.calc-rm:hover{color:#ff5555}
+.calc-add{background:transparent;border:1px dashed var(--border);color:var(--muted);padding:.7rem;font-family:var(--body);font-size:13px;cursor:pointer;width:100%;margin-top:.5rem;transition:all .2s}
+.calc-add:hover{border-color:var(--green);color:var(--green)}
+.calc-go{background:var(--green);color:#0b0f0e;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.9rem;border:none;cursor:pointer;width:100%;margin-top:1rem;transition:all .25s}
+.calc-go:hover{background:var(--green2)}
+.calc-result{background:var(--card);border:1px solid var(--border);padding:2rem}
+.calc-total{font-family:var(--heading);font-size:3.5rem;color:var(--green);line-height:1;margin-bottom:.3rem}
+.calc-total small{font-size:1rem;color:var(--muted);font-family:var(--body);font-weight:300;display:block;margin-top:.2rem}
+.calc-items{margin-top:1.5rem;display:flex;flex-direction:column;gap:.7rem}
+.calc-item{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);padding:.6rem 0;border-bottom:1px solid var(--border)}
+.calc-item span:last-child{color:var(--text);font-weight:500}
+.calc-cta{display:block;text-align:center;text-decoration:none;background:var(--green);color:#0b0f0e;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:.9rem;margin-top:1.5rem;transition:all .25s}
+.calc-cta:hover{background:var(--green2)}
 
-/* ── PARTNERS ── */
+/* TESTI */
+.testi{background:var(--bg2)}
+.ttrack-wrap{overflow:hidden;margin-top:2.5rem}
+.ttrack{display:flex;gap:1.5rem;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.tcard{min-width:calc(33.333% - 1rem);background:var(--card);border:1px solid var(--border);padding:2rem;flex-shrink:0;transition:border-color .3s}
+.tcard:hover{border-color:rgba(76,217,100,.25)}
+.tstars{color:var(--green);font-size:.85rem;letter-spacing:2px;margin-bottom:.8rem}
+.ttext{font-size:13px;color:var(--muted);font-style:italic;line-height:1.8;margin-bottom:1.4rem}
+.tauthor{display:flex;align-items:center;gap:.8rem}
+.tavatar{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--green)}
+.tavatar img{width:100%;height:100%;object-fit:cover}
+.tname{font-weight:600;font-size:13px;color:var(--text)}
+.trole{font-size:11px;color:var(--muted)}
+.tctrl{display:flex;gap:.8rem;margin-top:2rem;align-items:center}
+.tbtn{width:40px;height:40px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.tbtn:hover{border-color:var(--green);color:var(--green)}
+.tprog{flex:1;height:2px;background:var(--border)}
+.tpbar{height:100%;background:var(--green);width:25%;transition:width .4s}
+
+/* PARTNERS */
 .partners{background:var(--bg);text-align:center}
-.partners-carousel{overflow:hidden;margin-top:2.5rem;position:relative}
-.partners-carousel::before,.partners-carousel::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
-.partners-carousel::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
-.partners-carousel::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
-.partners-track{display:flex;gap:1rem;animation:scroll 28s linear infinite}
-.partners-track:hover{animation-play-state:paused}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.partner-card{min-width:100px;height:80px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
-.partner-card:hover{border-color:rgba(76,217,100,.4)}
-.partner-card img{width:70px;height:60px;object-fit:contain;filter:grayscale(80%) brightness(.7);opacity:.6;transition:all .35s}
-.partner-card:hover img{filter:grayscale(0%) brightness(1);opacity:1}
+.pcar{overflow:hidden;margin-top:2.5rem;position:relative}
+.pcar::before,.pcar::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.pcar::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
+.pcar::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+.ptrack{display:flex;gap:1rem;animation:pscroll 28s linear infinite}
+.ptrack:hover{animation-play-state:paused}
+@keyframes pscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.pcard{min-width:100px;height:80px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+.pcard:hover{border-color:rgba(76,217,100,.4)}
+.pcard img{width:70px;height:60px;object-fit:contain;filter:grayscale(80%) brightness(.7);opacity:.6;transition:all .35s}
+.pcard:hover img{filter:grayscale(0%) brightness(1);opacity:1}
 
-/* ── CTA ── */
+/* BLOG */
+.blog{background:var(--bg2)}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.bcard{background:var(--card);border:1px solid var(--border);overflow:hidden;transition:all .3s}
+.bcard:hover{border-color:rgba(76,217,100,.25);transform:translateY(-4px)}
+.bimg{height:180px;overflow:hidden;position:relative}
+.bimg img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.bcard:hover .bimg img{transform:scale(1.06)}
+.btag{position:absolute;top:.8rem;left:.8rem;background:var(--green);color:#0b0f0e;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.3rem .7rem}
+.bbody{padding:1.4rem}
+.bdate{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:.5rem}
+.btitle{font-family:var(--heading);font-size:1.2rem;color:var(--text);margin-bottom:.6rem;line-height:1.3}
+.bexc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1rem}
+.bread{font-size:12px;font-weight:600;color:var(--green);letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:letter-spacing .2s}
+.bread:hover{letter-spacing:2px}
+
+/* BOOKING */
+.booking{background:var(--bg)}
+.bwrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+.binfo h3{font-family:var(--heading);font-size:1.8rem;color:var(--text);margin-bottom:1rem}
+.binfo p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:1.5rem}
+.bci{display:flex;align-items:center;gap:.8rem;padding:.8rem;background:var(--card);border:1px solid var(--border);margin-bottom:.6rem}
+.bci a,.bci p{font-size:13px;color:var(--muted);text-decoration:none;margin:0}
+.bci a:hover{color:var(--green)}
+.bform{background:var(--card);border:1px solid var(--border);padding:2rem}
+.fg{margin-bottom:1.2rem}
+.fg label{display:block;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:var(--body);font-size:14px;transition:border-color .2s;resize:vertical}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--green)}
+.fg select option{background:var(--bg2)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.fsub{background:var(--green);color:#0b0f0e;font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:1rem;border:none;cursor:pointer;width:100%;transition:all .25s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.fsub:hover{background:var(--green2)}
+.fsuccess{display:none;background:rgba(76,217,100,.1);border:1px solid rgba(76,217,100,.3);padding:1rem;color:var(--green);font-size:14px;text-align:center;margin-top:1rem}
+
+/* CONTACT */
+.contact{background:var(--bg2)}
+.cwrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem}
+
+/* CTA */
 .cta{background:var(--bg2);padding:6rem 5vw;position:relative;overflow:hidden;text-align:center}
-.cta-bg-text{position:absolute;font-family:var(--heading);font-size:clamp(6rem,18vw,14rem);color:rgba(76,217,100,.025);white-space:nowrap;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none;letter-spacing:.05em}
-.cta-inner{position:relative;z-index:2}
-.cta .section-title{font-size:clamp(2.5rem,5vw,4.2rem);max-width:580px;margin:0 auto 1.2rem}
+.cta-bg{position:absolute;font-family:var(--heading);font-size:clamp(6rem,18vw,14rem);color:rgba(76,217,100,.025);white-space:nowrap;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none}
+.cta-in{position:relative;z-index:2}
+.cta .stitle{font-size:clamp(2.5rem,5vw,4.2rem);max-width:580px;margin:0 auto 1.2rem}
 .cta p{color:var(--muted);max-width:420px;margin:0 auto 2.5rem}
 .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
-.cta-phone{font-family:var(--heading);font-size:1.8rem;color:var(--green);text-decoration:none;transition:opacity .2s;display:inline-block}
-.cta-phone:hover{opacity:.75}
+.cta-phone{font-family:var(--heading);font-size:1.8rem;color:var(--green);text-decoration:none;display:inline-block;transition:opacity .2s}
+.cta-phone:hover{opacity:.7}
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2rem}
-.footer-top{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
-.footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:260px}
-.footer-col h5{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:1.2rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
-.footer-col ul{list-style:none}
-.footer-col li{margin-bottom:.5rem}
-.footer-col a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:.4rem}
-.footer-col a:hover{color:var(--green)}
-.footer-col a::before{content:'→';font-size:11px;opacity:0;transition:opacity .2s;color:var(--green)}
-.footer-col a:hover::before{opacity:1}
-.footer-col p{font-size:13px;color:var(--muted);margin-bottom:.5rem;line-height:1.6}
-.footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center}
-.footer-bottom p{font-size:12px;color:var(--muted)}
-.footer-logo img{height:32px;opacity:.5}
+.ftop{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.fbrand p{font-size:13px;color:var(--muted);line-height:1.7;margin-top:1rem;max-width:260px}
+.fcol h5{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:1.2rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
+.fcol ul{list-style:none}
+.fcol li{margin-bottom:.5rem}
+.fcol a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.fcol a:hover{color:var(--green)}
+.fcol p{font-size:13px;color:var(--muted);margin-bottom:.5rem;line-height:1.6}
+.fbot{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.fbot p{font-size:12px;color:var(--muted)}
 
-/* ── SCROLL TO TOP ── */
-.scrolltop{position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;background:var(--green);color:#0b0f0e;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(20px);transition:all .3s;z-index:100;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
-.scrolltop.visible{opacity:1;transform:translateY(0)}
-.scrolltop:hover{background:var(--green2)}
+/* WHATSAPP */
+.wa{position:fixed;bottom:2rem;right:2rem;width:54px;height:54px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:300;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:all .3s;animation:wapulse 2.5s infinite}
+.wa:hover{transform:scale(1.1);animation:none;box-shadow:0 6px 28px rgba(37,211,102,.6)}
+.wa svg{width:28px;height:28px;fill:#fff}
+.wa-tip{position:absolute;right:62px;background:#0b0f0e;color:#fff;font-size:12px;white-space:nowrap;padding:.4rem .8rem;border:1px solid var(--border);opacity:0;pointer-events:none;transition:opacity .2s}
+.wa:hover .wa-tip{opacity:1}
+@keyframes wapulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 32px rgba(37,211,102,.65)}}
 
-/* ── ANIMATIONS ── */
+/* SCROLL TOP */
+.stbtn{position:fixed;bottom:6.5rem;right:2.2rem;width:40px;height:40px;background:var(--green);color:#0b0f0e;border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(20px);transition:all .3s;z-index:100;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
+.stbtn.visible{opacity:1;transform:translateY(0)}
+.stbtn:hover{background:var(--green2)}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── MOBILE ── */
-@media(max-width:900px){
-  .nav-links,.hero-stats{display:none}
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .about,.why,.bwrap,.cwrap,.calc-wrap{grid-template-columns:1fr;gap:2.5rem}
+  .ftop{grid-template-columns:1fr 1fr}
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .sband{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav-links,.nav-btn{display:none}
   .hamburger{display:flex}
-  .about,.why{grid-template-columns:1fr;gap:2.5rem}
-  .services-grid{grid-template-columns:1fr}
-  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
-  .gallery-item.tall{grid-row:span 1}
-  .testi-card{min-width:90%}
-  .stats-band{grid-template-columns:repeat(2,1fr)}
-  .footer-top{grid-template-columns:1fr 1fr}
+  .hero-stats{display:none}
+  .gal-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gal-item.tall{grid-row:span 1}
+  .tcard{min-width:90%}
+  .bgrid{grid-template-columns:1fr}
+  .ftop{grid-template-columns:1fr}
+  .svc-grid{grid-template-columns:1fr}
+  .sband{grid-template-columns:1fr 1fr;padding:2.5rem 5vw;gap:1rem}
+  .frow{grid-template-columns:1fr}
+  .calc-head,.calc-row{grid-template-columns:1fr 70px 50px 40px 24px}
+  section{padding:4rem 5vw}
   .cta-btns{flex-direction:column;align-items:center}
+}
+@media(max-width:480px){
+  .hero-title{font-size:2.8rem}
+  .bgrid,.cwrap{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="pre-sun"><div class="pre-core"></div><div class="pre-ring"></div></div>
+  <div class="pre-logo">CHYBON<span>SOLAR</span></div>
+  <div class="pre-bar-wrap"><div class="pre-bar" id="preBar"></div></div>
+  <div class="pre-pct" id="prePct">0%</div>
+</div>
+
 <!-- NAV -->
 <nav class="nav" id="nav">
   <div class="nav-logo">
-    <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/07/cropped-WhatsApp_Image_2024-07-26_at_23.52.01-removebg-preview-1.png" alt="Chybonsolar" onerror="this.style.display='none';document.querySelector('.nav-logo .fallback').style.display='block'"/>
-    <div class="fallback">CHYBON<span>SOLAR</span></div>
+    <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/07/cropped-WhatsApp_Image_2024-07-26_at_23.52.01-removebg-preview-1.png" alt="Chybonsolar" onerror="this.style.display='none';document.querySelector('.nav-fallback').style.display='block'"/>
+    <div class="nav-fallback">CHYBON<span>SOLAR</span></div>
   </div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#why">Why Us</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#calculator">Calculator</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#booking">Book</a></li>
   </ul>
-  <button class="nav-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
-  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
-</nav>
-
-<!-- HERO SLIDESHOW -->
-<section class="hero">
-  <div class="slides">
-    <div class="slide slide-1 active"></div>
-    <div class="slide slide-2"></div>
-    <div class="slide slide-3"></div>
-    <div class="slide slide-4"></div>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <button class="nav-btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Get a Quote</button>
+    <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
+</nav>
+<div class="mobile-menu" id="mMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#gallery" onclick="closeMenu()">Gallery</a>
+  <a href="#calculator" onclick="closeMenu()">Energy Calculator</a>
+  <a href="#blog" onclick="closeMenu()">Blog</a>
+  <a href="#booking" onclick="closeMenu()">Book Appointment</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
 
+<!-- HERO -->
+<section class="hero" id="home">
+  <canvas id="pcanvas"></canvas>
+  <div class="slides">
+    <div class="slide s1 active"></div>
+    <div class="slide s2"></div>
+    <div class="slide s3"></div>
+    <div class="slide s4"></div>
+  </div>
   <div class="hero-content">
-    <div class="hero-eyebrow">Renewable Energy · West Africa</div>
+    <div class="eyebrow">Renewable Energy · West Africa</div>
     <h1 class="hero-title">Powering a<br/><em>Greener</em> Tomorrow.</h1>
     <p class="hero-sub">A trusted provider of renewable energy solutions across Nigeria, The Gambia and the West African sub-region since 2000.</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Get a Free Quote</a>
-      <a href="#gallery" class="btn-ghost">View Our Projects</a>
+      <a href="#booking" class="btn-p">Get a Free Quote</a>
+      <a href="#gallery" class="btn-g">View Our Projects</a>
     </div>
   </div>
-
-  <div class="slide-dots" id="slideDots">
-    <div class="dot active" onclick="goToSlide(0)"></div>
-    <div class="dot" onclick="goToSlide(1)"></div>
-    <div class="dot" onclick="goToSlide(2)"></div>
-    <div class="dot" onclick="goToSlide(3)"></div>
+  <div class="slide-dots" id="sdots">
+    <div class="dot active" onclick="goSlide(0)"></div>
+    <div class="dot" onclick="goSlide(1)"></div>
+    <div class="dot" onclick="goSlide(2)"></div>
+    <div class="dot" onclick="goSlide(3)"></div>
   </div>
-  <div class="slide-counter"><span id="slideNum">01</span> / 04</div>
-
+  <div class="slide-ctr"><span id="snum">01</span> / 04</div>
   <div class="hero-stats">
-    <div class="stat-item"><span class="stat-num" data-target="120">0</span><span class="stat-label">Projects Completed</span></div>
-    <div class="stat-item"><span class="stat-num" data-target="25">0</span><span class="stat-label">Years Experience</span></div>
-    <div class="stat-item"><span class="stat-num" data-target="28">0</span><span class="stat-label">Cities Reached</span></div>
-    <div class="stat-item"><span class="stat-num" data-target="90">0</span><span class="stat-label">% Repeat Clients</span></div>
+    <div class="sstat"><span class="sstat-n" data-target="120">0</span><span class="sstat-l">Projects</span></div>
+    <div class="sstat"><span class="sstat-n" data-target="25">0</span><span class="sstat-l">Years</span></div>
+    <div class="sstat"><span class="sstat-n" data-target="28">0</span><span class="sstat-l">Cities</span></div>
+    <div class="sstat"><span class="sstat-n" data-target="90">0</span><span class="sstat-l">% Repeat Clients</span></div>
   </div>
 </section>
 
 <!-- ABOUT -->
 <section class="about" id="about">
-  <div class="about-img-wrap reveal-left">
+  <div class="aimg rl">
     <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-nc-farm-bureau-mark-15751120-scaled.jpg" alt="Solar installation"/>
-    <div class="about-badge"><strong>2000</strong><span>Est. Year</span></div>
+    <div class="abadge"><strong>2000</strong><span>Est. Year</span></div>
   </div>
-  <div class="reveal-right">
-    <div class="section-tag">Our Story</div>
-    <h2 class="section-title">Helping the World Achieve Carbon Neutrality</h2>
-    <div class="about-body">
-      <p>Founded by Okoye Bonny Chukwurah, Chybonsolar Energy started in The Gambia in 2000 and expanded into Nigeria in 2008. Today we hold a leadership position in renewable energy across Sub-Saharan Africa.</p>
+  <div class="rr">
+    <div class="stag">Our Story</div>
+    <h2 class="stitle">Helping the World Achieve Carbon Neutrality</h2>
+    <div class="atext">
+      <p>Founded by Okoye Bonny Chukwurah, Chybonsolar Energy started in The Gambia in 2000 and expanded into Nigeria in 2008. We hold a leadership position in renewable energy across Sub-Saharan Africa.</p>
       <p>Our mission is to contribute significantly towards meeting basic energy needs by offering reliable, sustainable solutions — making a positive impact on the environment and communities we serve.</p>
     </div>
-    <div class="about-pills">
+    <div class="apills">
       <div class="pill"><h4>Innovation</h4><p>Cutting-edge tech for peak efficiency.</p></div>
       <div class="pill"><h4>Collaboration</h4><p>Working closely with clients and partners.</p></div>
       <div class="pill"><h4>Excellence</h4><p>Unmatched quality in every project.</p></div>
       <div class="pill"><h4>Sustainability</h4><p>Building a greener planet for all.</p></div>
     </div>
-    <a href="https://chybonsolarenergy.com/about-us/" class="btn-primary" style="margin-top:2rem;display:inline-block">More About Us</a>
+    <a href="https://chybonsolarenergy.com/about-us/" class="btn-p" style="margin-top:2rem;display:inline-block">More About Us</a>
   </div>
 </section>
 
 <!-- SERVICES -->
 <section class="services" id="services">
-  <div class="services-top reveal">
-    <div>
-      <div class="section-tag">What We Do</div>
-      <h2 class="section-title">Our Services</h2>
-    </div>
-    <a href="https://chybonsolarenergy.com/why-choose-us/" class="btn-ghost">View All Services</a>
-  </div>
-  <div class="services-grid">
-    <div class="svc reveal delay-1"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-num">01</div><div class="svc-icon">☀️</div><div class="svc-title">Solar Home & Street Lighting</div><p class="svc-desc">High-quality LED solar systems for residential, commercial and street use. Sustainable and cost-effective lighting wherever you need it.</p></div>
-    <div class="svc reveal delay-2"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-num">02</div><div class="svc-icon">💧</div><div class="svc-title">Solar Water Pumping</div><p class="svc-desc">Clean, efficient solar-powered water solutions for agriculture, industry and domestic needs. The eco-friendly alternative to diesel pumps.</p></div>
-    <div class="svc reveal delay-3"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-num">03</div><div class="svc-icon">⚡</div><div class="svc-title">Inverter Backup Systems</div><p class="svc-desc">Keep critical appliances running during power outages. Seamless battery switching with zero interruption to your operations.</p></div>
-    <div class="svc reveal delay-1"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-num">04</div><div class="svc-icon">🏗️</div><div class="svc-title">Building Automation</div><p class="svc-desc">Loxone smart building systems to intelligently manage energy, lighting and security for maximum comfort and efficiency.</p></div>
-    <div class="svc reveal delay-2"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-num">05</div><div class="svc-icon">🌍</div><div class="svc-title">Commercial Solar</div><p class="svc-desc">Large-scale solutions for businesses and government institutions seeking to cut energy costs and reduce carbon footprint.</p></div>
-    <div class="svc reveal delay-3"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-num">06</div><div class="svc-icon">🔧</div><div class="svc-title">Maintenance & Support</div><p class="svc-desc">Comprehensive after-installation support to keep your systems performing at peak efficiency year-round. We're your long-term partner.</p></div>
+  <div class="svc-top reveal"><div><div class="stag">What We Do</div><h2 class="stitle">Our Services</h2></div><a href="https://chybonsolarenergy.com/why-choose-us/" class="btn-g">View All</a></div>
+  <div class="svc-grid">
+    <div class="svc reveal d1"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-n">01</div><div class="svc-icon">☀️</div><div class="svc-title">Solar Home & Street Lighting</div><p class="svc-desc">High-quality LED solar systems for residential, commercial and street use. Sustainable and cost-effective wherever you need it.</p></div>
+    <div class="svc reveal d2"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-n">02</div><div class="svc-icon">💧</div><div class="svc-title">Solar Water Pumping</div><p class="svc-desc">Clean, efficient solar-powered water solutions for agriculture, industry and domestic needs. Eco-friendly alternative to diesel pumps.</p></div>
+    <div class="svc reveal d3"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-n">03</div><div class="svc-icon">⚡</div><div class="svc-title">Inverter Backup Systems</div><p class="svc-desc">Keep critical appliances running during power outages. Seamless battery switching with zero interruption to your operations.</p></div>
+    <div class="svc reveal d1"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-n">04</div><div class="svc-icon">🏗️</div><div class="svc-title">Building Automation</div><p class="svc-desc">Loxone smart systems to manage energy, lighting and security for maximum comfort and efficiency.</p></div>
+    <div class="svc reveal d2"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-n">05</div><div class="svc-icon">🌍</div><div class="svc-title">Commercial Solar</div><p class="svc-desc">Large-scale solutions for businesses and government institutions seeking to cut energy costs and carbon footprint.</p></div>
+    <div class="svc reveal d3"><div class="svc-glow"></div><div class="svc-bar"></div><div class="svc-n">06</div><div class="svc-icon">🔧</div><div class="svc-title">Maintenance & Support</div><p class="svc-desc">Comprehensive after-installation support to keep your systems at peak efficiency. We're your long-term energy partner.</p></div>
   </div>
 </section>
 
 <!-- GALLERY -->
 <section class="gallery" id="gallery">
-  <div class="reveal">
-    <div class="section-tag">Project Solstice</div>
-    <h2 class="section-title">Featured Projects</h2>
+  <div class="reveal"><div class="stag">Project Solstice</div><h2 class="stitle">Featured Projects</h2></div>
+  <div class="gal-grid">
+    <div class="gal-item tall reveal" onclick="openLB(0)"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875685-scaled.jpg" alt=""/><div class="gal-over"><div class="gal-zoom">+</div></div></div>
+    <div class="gal-item reveal d1" onclick="openLB(1)"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-erod-photos-1023772446-20844067-1-scaled.jpg" alt=""/><div class="gal-over"><div class="gal-zoom">+</div></div></div>
+    <div class="gal-item reveal d2" onclick="openLB(2)"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875676-scaled.jpg" alt=""/><div class="gal-over"><div class="gal-zoom">+</div></div></div>
+    <div class="gal-item reveal d3" onclick="openLB(3)"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799714-scaled.jpg" alt=""/><div class="gal-over"><div class="gal-zoom">+</div></div></div>
+    <div class="gal-item reveal d4" onclick="openLB(4)"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799727-scaled.jpg" alt=""/><div class="gal-over"><div class="gal-zoom">+</div></div></div>
   </div>
-  <div class="gallery-grid">
-    <div class="gallery-item tall reveal" onclick="openLightbox(0)">
-      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875685-scaled.jpg" alt="Project 1"/>
-      <div class="gallery-overlay"><div class="gallery-zoom">+</div></div>
-    </div>
-    <div class="gallery-item reveal delay-1" onclick="openLightbox(1)">
-      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-erod-photos-1023772446-20844067-1-scaled.jpg" alt="Project 2"/>
-      <div class="gallery-overlay"><div class="gallery-zoom">+</div></div>
-    </div>
-    <div class="gallery-item reveal delay-2" onclick="openLightbox(2)">
-      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875676-scaled.jpg" alt="Project 3"/>
-      <div class="gallery-overlay"><div class="gallery-zoom">+</div></div>
-    </div>
-    <div class="gallery-item reveal delay-3" onclick="openLightbox(3)">
-      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799714-scaled.jpg" alt="Project 4"/>
-      <div class="gallery-overlay"><div class="gallery-zoom">+</div></div>
-    </div>
-    <div class="gallery-item reveal delay-4" onclick="openLightbox(4)">
-      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799727-scaled.jpg" alt="Project 5"/>
-      <div class="gallery-overlay"><div class="gallery-zoom">+</div></div>
-    </div>
-  </div>
-  <div style="text-align:center;margin-top:2rem">
-    <a href="https://chybonsolarenergy.com/try-home/" class="btn-ghost">View Full Gallery</a>
-  </div>
+  <div style="text-align:center;margin-top:2rem"><a href="https://chybonsolarenergy.com/try-home/" class="btn-g">View Full Gallery</a></div>
 </section>
-
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <button class="lightbox-prev" onclick="lightboxNav(-1)">‹</button>
-  <img id="lightboxImg" src="" alt=""/>
-  <button class="lightbox-next" onclick="lightboxNav(1)">›</button>
-  <div class="lightbox-counter" id="lightboxCounter"></div>
+<div class="lbox" id="lbox">
+  <button class="lbox-close" onclick="closeLB()">✕</button>
+  <button class="lbox-prev" onclick="lbNav(-1)">‹</button>
+  <img id="lbImg" src="" alt=""/>
+  <button class="lbox-next" onclick="lbNav(1)">›</button>
+  <div class="lbox-ctr" id="lbCtr"></div>
 </div>
 
 <!-- STATS BAND -->
-<div class="stats-band">
-  <div class="reveal"><span class="band-num" data-target="120">0</span><span class="band-label">Projects Completed</span></div>
-  <div class="reveal delay-1"><span class="band-num" data-target="25">0</span><span class="band-label">Years Experience</span></div>
-  <div class="reveal delay-2"><span class="band-num" data-target="28">0</span><span class="band-label">Cities Reached</span></div>
-  <div class="reveal delay-3"><span class="band-num" data-target="25">0</span><span class="band-label">Awards Won</span></div>
+<div class="sband">
+  <div class="reveal"><span class="bnum" data-target="120">0</span><span class="blbl">Projects Completed</span></div>
+  <div class="reveal d1"><span class="bnum" data-target="25">0</span><span class="blbl">Years Experience</span></div>
+  <div class="reveal d2"><span class="bnum" data-target="28">0</span><span class="blbl">Cities Reached</span></div>
+  <div class="reveal d3"><span class="bnum" data-target="25">0</span><span class="blbl">Awards Won</span></div>
 </div>
 
 <!-- WHY US -->
 <section class="why" id="why">
-  <div class="reveal-left">
-    <div class="section-tag">Why Choose Us</div>
-    <h2 class="section-title">Our Performance Speaks for Itself</h2>
-    <p style="color:var(--muted);line-height:1.8;margin-bottom:2rem">Our performance in design and installation has ensured for us a 90% repeat client base. We cultivate innovation and healthy collaboration to deliver renewable energy solutions you can trust.</p>
+  <div class="rl">
+    <div class="stag">Why Choose Us</div>
+    <h2 class="stitle">Our Performance Speaks for Itself</h2>
+    <p style="color:var(--muted);line-height:1.8;margin-bottom:2rem">Our performance in design and installation has ensured a 90% repeat client base. We cultivate innovation and healthy collaboration to deliver solutions you can trust.</p>
     <div style="background:var(--card);border:1px solid var(--border);padding:1.5rem;margin-bottom:2rem;border-left:3px solid var(--green)">
-      <p style="font-family:var(--heading);font-size:2rem;color:var(--green);line-height:1">90%</p>
+      <p style="font-family:var(--heading);font-size:2.5rem;color:var(--green);line-height:1">90%</p>
       <p style="font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:.4rem">Repeat Client Base</p>
     </div>
-    <a href="https://chybonsolarenergy.com/about-us/" class="btn-primary">Learn More About Us</a>
+    <a href="#booking" class="btn-p">Book a Consultation</a>
   </div>
-  <div class="why-features reveal-right">
-    <div class="feature delay-1">
-      <div class="feature-icon">🏆</div>
-      <div><h4>25+ Awards & Recognition</h4><p>Recognised as a leading renewable energy provider across West Africa.</p></div>
+  <div class="why-list rr">
+    <div class="feat d1"><div class="feat-icon">🏆</div><div><h4>25+ Awards & Recognition</h4><p>Recognised as a leading renewable energy provider across West Africa.</p></div></div>
+    <div class="feat d2"><div class="feat-icon">✅</div><div><h4>High Quality Products</h4><p>Globally certified manufacturers ensuring durability and peak performance.</p></div></div>
+    <div class="feat d3"><div class="feat-icon">🌱</div><div><h4>Green & Clean Environment</h4><p>Committed to carbon neutrality and pollution-free communities.</p></div></div>
+    <div class="feat d4"><div class="feat-icon">🤝</div><div><h4>Humanitarian Community Focus</h4><p>Investing in projects that benefit local communities across West Africa.</p></div></div>
+  </div>
+</section>
+
+<!-- ENERGY CALCULATOR -->
+<section class="calc" id="calculator">
+  <div class="reveal"><div class="stag">Free Tool</div><h2 class="stitle">Energy Usage Calculator</h2><p style="color:var(--muted);max-width:540px;margin-top:.5rem">Add your appliances to estimate daily energy consumption and discover the right solar system size for you.</p></div>
+  <div class="calc-wrap">
+    <div class="calc-form rl">
+      <div class="calc-head"><span>Appliance</span><span>Watts</span><span>Hrs/day</span><span>Qty</span><span></span></div>
+      <div id="calcRows">
+        <div class="calc-row">
+          <select onchange="calcUpdate()"><option>TV</option><option>Fan</option><option>Fridge</option><option>Air Conditioner</option><option>Laptop</option><option>Phone Charger</option><option>Light Bulb</option><option>Microwave</option><option>Water Pump</option><option>Security Light</option></select>
+          <input type="number" value="65" min="0" oninput="calcUpdate()"/>
+          <input type="number" value="4" min="0" max="24" oninput="calcUpdate()"/>
+          <input type="number" value="1" min="1" oninput="calcUpdate()"/>
+          <span></span>
+        </div>
+      </div>
+      <button class="calc-add" onclick="addRow()">+ Add Appliance</button>
+      <button class="calc-go" onclick="calcUpdate()">Calculate Now</button>
     </div>
-    <div class="feature delay-2">
-      <div class="feature-icon">✅</div>
-      <div><h4>High Quality Products</h4><p>Globally certified manufacturers ensuring durability and peak performance.</p></div>
-    </div>
-    <div class="feature delay-3">
-      <div class="feature-icon">🌱</div>
-      <div><h4>Green & Clean Environment</h4><p>Committed to carbon neutrality and building pollution-free communities.</p></div>
-    </div>
-    <div class="feature delay-4">
-      <div class="feature-icon">🤝</div>
-      <div><h4>Humanitarian Community Focus</h4><p>Investing in renewable projects that benefit local communities across West Africa.</p></div>
+    <div class="calc-result rr">
+      <p style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Daily Energy Consumption</p>
+      <div class="calc-total" id="calcTotal">0.00<small>kWh per day</small></div>
+      <div class="calc-items">
+        <div class="calc-item"><span>Recommended Battery</span><span id="cBat">—</span></div>
+        <div class="calc-item"><span>Solar Panel Size</span><span id="cPanel">—</span></div>
+        <div class="calc-item"><span>Inverter Size</span><span id="cInv">—</span></div>
+        <div class="calc-item"><span>Est. Monthly Savings</span><span id="cSave" style="color:var(--green)">—</span></div>
+      </div>
+      <a href="#booking" class="calc-cta">Get a Custom Quote →</a>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="reveal">
-    <div class="section-tag">Client Feedback</div>
-    <h2 class="section-title">What Our Clients Say</h2>
-  </div>
-  <div class="testi-track-wrap">
-    <div class="testi-track" id="testiTrack">
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"From consultation to installation, Chybonsolar Energy exceeded our expectations. Their solar products are top-notch and their team is truly dedicated to customer satisfaction. We've recommended them to all our neighbours!"</p>
-        <div class="testi-author"><div class="testi-avatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-2282520.jpeg" alt="Henrita"/></div><div><div class="testi-name">Henrita S.</div><div class="testi-role">CEO</div></div></div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"We have an excellent working relationship with Chybonsolar Energy and her staff. They display real specialty in this field, and their after-installation experience is truly commendable."</p>
-        <div class="testi-author"><div class="testi-avatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-5398961.webp" alt="Woodi"/></div><div><div class="testi-name">Mrs. Woodi Wiljo Oosterom</div><div class="testi-role">President, Silent Work</div></div></div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"High-quality solar products that have transformed our energy usage. Efficient, durable, and aesthetically pleasing. We're thrilled with the performance and excellent customer service."</p>
-        <div class="testi-author"><div class="testi-avatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-5668766.webp" alt="Phillip"/></div><div><div class="testi-name">Phillip Jarju</div><div class="testi-role">CFO</div></div></div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-text">"From consultation to installation, Chybonsolar Energy exceeded our expectations. Their solar products are top-notch and their team is truly dedicated to ensuring customer satisfaction."</p>
-        <div class="testi-author"><div class="testi-avatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-1181695.webp" alt="Ebraima"/></div><div><div class="testi-name">Ebraima</div><div class="testi-role">CEO</div></div></div>
-      </div>
+<section class="testi" id="testi">
+  <div class="reveal"><div class="stag">Client Feedback</div><h2 class="stitle">What Our Clients Say</h2></div>
+  <div class="ttrack-wrap">
+    <div class="ttrack" id="ttrack">
+      <div class="tcard"><div class="tstars">★★★★★</div><p class="ttext">"From consultation to installation, Chybonsolar Energy exceeded our expectations. Their solar products are top-notch and their team is truly dedicated to customer satisfaction."</p><div class="tauthor"><div class="tavatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-2282520.jpeg" alt="H"/></div><div><div class="tname">Henrita S.</div><div class="trole">CEO</div></div></div></div>
+      <div class="tcard"><div class="tstars">★★★★★</div><p class="ttext">"We have an excellent working relationship with Chybonsolar Energy. They display real specialty in this field, and their after-installation experience is truly commendable."</p><div class="tauthor"><div class="tavatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-5398961.webp" alt="W"/></div><div><div class="tname">Mrs. Woodi Wiljo Oosterom</div><div class="trole">President, Silent Work</div></div></div></div>
+      <div class="tcard"><div class="tstars">★★★★★</div><p class="ttext">"High-quality solar products that transformed our energy usage. Efficient, durable, and aesthetically pleasing. Thrilled with the performance and excellent customer service."</p><div class="tauthor"><div class="tavatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-5668766.webp" alt="P"/></div><div><div class="tname">Phillip Jarju</div><div class="trole">CFO</div></div></div></div>
+      <div class="tcard"><div class="tstars">★★★★★</div><p class="ttext">"Chybonsolar Energy exceeded our expectations. Their solar products are top-notch and their team is truly dedicated to ensuring customer satisfaction. Highly recommended!"</p><div class="tauthor"><div class="tavatar"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-photo-1181695.webp" alt="E"/></div><div><div class="tname">Ebraima</div><div class="trole">CEO</div></div></div></div>
     </div>
   </div>
-  <div class="testi-controls">
-    <button class="testi-btn" onclick="testiNav(-1)">‹</button>
-    <button class="testi-btn" onclick="testiNav(1)">›</button>
-    <div class="testi-progress"><div class="testi-progress-bar" id="testiBar"></div></div>
+  <div class="tctrl">
+    <button class="tbtn" onclick="tNav(-1)">‹</button>
+    <button class="tbtn" onclick="tNav(1)">›</button>
+    <div class="tprog"><div class="tpbar" id="tpbar"></div></div>
   </div>
 </section>
 
 <!-- PARTNERS -->
 <section class="partners">
-  <div class="reveal">
-    <div class="section-tag" style="justify-content:center">Our Partners</div>
-    <h2 class="section-title" style="text-align:center">Meet Our Partners</h2>
+  <div class="reveal"><div class="stag" style="justify-content:center">Our Partners</div><h2 class="stitle" style="text-align:center">Meet Our Partners</h2></div>
+  <div class="pcar">
+    <div class="ptrack">
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/1-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/2-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/3-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/4-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/5-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/6-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/7-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/8-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/9-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/10-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/1-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/2-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/3-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/4-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/5-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/6-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/7-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/8-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/9-300x300.jpg" alt=""/></div>
+      <div class="pcard"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/10-300x300.jpg" alt=""/></div>
+    </div>
   </div>
-  <div class="partners-carousel">
-    <div class="partners-track" id="partnersTrack">
-      <!-- First set -->
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/1-300x300.jpg" alt="Partner 1"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/2-300x300.jpg" alt="Partner 2"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/3-300x300.jpg" alt="Partner 3"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/4-300x300.jpg" alt="Partner 4"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/5-300x300.jpg" alt="Partner 5"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/6-300x300.jpg" alt="Partner 6"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/7-300x300.jpg" alt="Partner 7"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/8-300x300.jpg" alt="Partner 8"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/9-300x300.jpg" alt="Partner 9"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/10-300x300.jpg" alt="Partner 10"/></div>
-      <!-- Duplicate for seamless loop -->
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/1-300x300.jpg" alt="Partner 1"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/2-300x300.jpg" alt="Partner 2"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/3-300x300.jpg" alt="Partner 3"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/4-300x300.jpg" alt="Partner 4"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/5-300x300.jpg" alt="Partner 5"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/6-300x300.jpg" alt="Partner 6"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/7-300x300.jpg" alt="Partner 7"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/8-300x300.jpg" alt="Partner 8"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/9-300x300.jpg" alt="Partner 9"/></div>
-      <div class="partner-card"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/10/10-300x300.jpg" alt="Partner 10"/></div>
+</section>
+
+<!-- BLOG -->
+<section class="blog" id="blog">
+  <div class="reveal"><div class="stag">News & Updates</div><h2 class="stitle">Latest From Our Blog</h2></div>
+  <div class="bgrid">
+    <div class="bcard reveal d1"><div class="bimg"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/07/futuristic-solar-power-station-generates-electricity-sunset-generative-ai.jpg" alt=""/><div class="btag">Solar Tips</div></div><div class="bbody"><div class="bdate">March 10, 2025</div><h3 class="btitle">How to Reduce Your Electricity Bill by 80% With Solar</h3><p class="bexc">Discover the practical steps homeowners and businesses in Nigeria are taking to drastically cut energy costs using modern solar installations.</p><a href="https://chybonsolarenergy.com/" class="bread">Read More →</a></div></div>
+    <div class="bcard reveal d2"><div class="bimg"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875676-scaled.jpg" alt=""/><div class="btag">Industry</div></div><div class="bbody"><div class="bdate">February 22, 2025</div><h3 class="btitle">West Africa's Renewable Energy Boom: What It Means for You</h3><p class="bexc">West Africa is experiencing unprecedented growth in solar adoption. Here's how Chybonsolar is at the forefront of this clean energy revolution.</p><a href="https://chybonsolarenergy.com/" class="bread">Read More →</a></div></div>
+    <div class="bcard reveal d3"><div class="bimg"><img src="https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875685-scaled.jpg" alt=""/><div class="btag">Project</div></div><div class="bbody"><div class="bdate">January 15, 2025</div><h3 class="btitle">Project Solstice: Our Largest Commercial Installation Yet</h3><p class="bexc">We recently completed our most ambitious project to date — a large-scale solar installation powering an entire commercial estate in Lagos.</p><a href="https://chybonsolarenergy.com/" class="bread">Read More →</a></div></div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="booking" id="booking">
+  <div class="reveal"><div class="stag">Book Now</div><h2 class="stitle">Book an Appointment</h2></div>
+  <div class="bwrap">
+    <div class="binfo rl">
+      <h3>Let's Talk About Your Energy Needs</h3>
+      <p>Whether you're a homeowner, business, or organisation, our experts are ready to design the perfect renewable energy solution for you. Book a free consultation today.</p>
+      <div class="bci"><span>📞</span><a href="tel:+2347071117403">+234-707-111-7403</a></div>
+      <div class="bci"><span>📞</span><a href="tel:+2347016382231">+234-701-638-2231</a></div>
+      <div class="bci"><span>✉️</span><a href="/cdn-cgi/l/email-protection#e980878f86a98a81908b86879a8685889b8c878c9b8e90c78a8684"><span class="__cf_email__" data-cfemail="51383f373e11323928333e3f223e3d3023343f342336287f323e3c">[email&#160;protected]</span></a></div>
+      <div class="bci"><span>📍</span><p>Plot 9, Gbolahan Awe Close, Magodo Estate Phase II, Lagos</p></div>
+      <div class="bci"><span>📍</span><p>AU Summit Highway, Salagi, West Coast Region, The Gambia</p></div>
+    </div>
+    <div class="bform rr">
+      <div class="frow">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="John"/></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Doe"/></div>
+      </div>
+      <div class="fg"><label>Email Address</label><input type="email" placeholder="john@example.com"/></div>
+      <div class="fg"><label>Phone Number</label><input type="tel" placeholder="+234 ..."/></div>
+      <div class="fg"><label>Service Interested In</label><select><option>Solar Home Lighting</option><option>Solar Water Pumping</option><option>Inverter Backup System</option><option>Building Automation</option><option>Commercial Solar</option><option>Maintenance & Support</option><option>General Consultation</option></select></div>
+      <div class="frow">
+        <div class="fg"><label>Preferred Date</label><input type="date"/></div>
+        <div class="fg"><label>Preferred Time</label><select><option>Morning (8am–12pm)</option><option>Afternoon (12pm–4pm)</option><option>Evening (4pm–7pm)</option></select></div>
+      </div>
+      <div class="fg"><label>Message</label><textarea rows="3" placeholder="Tell us more about your energy needs..."></textarea></div>
+      <button class="fsub" onclick="submitForm('bsuccess')">Book Free Consultation</button>
+      <div class="fsuccess" id="bsuccess">✅ Booking received! We'll contact you within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="reveal"><div class="stag">Get In Touch</div><h2 class="stitle">Send Us a Message</h2></div>
+  <div class="cwrap">
+    <div class="bform rl">
+      <div class="frow">
+        <div class="fg"><label>Name</label><input type="text" placeholder="Your full name"/></div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com"/></div>
+      </div>
+      <div class="fg"><label>Subject</label><input type="text" placeholder="How can we help?"/></div>
+      <div class="fg"><label>Message</label><textarea rows="5" placeholder="Your message..."></textarea></div>
+      <button class="fsub" onclick="submitForm('csuccess')">Send Message</button>
+      <div class="fsuccess" id="csuccess">✅ Message sent! We'll get back to you shortly.</div>
+    </div>
+    <div class="rr" style="display:flex;flex-direction:column;gap:1.2rem">
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem">
+        <h4 style="font-family:var(--heading);font-size:1.3rem;color:var(--text);margin-bottom:1rem">Nigeria Office</h4>
+        <p style="font-size:13px;color:var(--muted);line-height:2">📞 +234-707-111-7403<br/>📞 +234-701-638-2231<br/>📞 +234-703-377-8865<br/>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3950575f56795a51405b56574a5655584b5c575c4b5e40175a5654">[email&#160;protected]</a><br/>📍 Plot 9, Gbolahan Awe Close, Magodo Estate Phase II, Lagos</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);padding:2rem">
+        <h4 style="font-family:var(--heading);font-size:1.3rem;color:var(--text);margin-bottom:1rem">Gambia Office</h4>
+        <p style="font-size:13px;color:var(--muted);line-height:2">📞 +220-755-8394<br/>📞 +220-368-2700<br/>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b6c6a6669626a4b6863726964657864676a796e656e796c7225686466">[email&#160;protected]</a><br/>📍 AU Summit Highway, Salagi, West Coast Region, The Gambia</p>
+      </div>
+      <a href="https://wa.me/2347071117403" style="background:var(--green);padding:1.5rem;text-align:center;text-decoration:none;display:block">
+        <p style="font-family:var(--heading);font-size:1.4rem;color:#0b0f0e">WhatsApp Us Directly</p>
+        <p style="color:#0b0f0e;font-weight:600;margin-top:.3rem">+234-707-111-7403</p>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta" id="contact">
-  <div class="cta-bg-text">SOLAR</div>
-  <div class="cta-inner reveal">
-    <div class="section-tag" style="justify-content:center">Start Your Journey</div>
-    <h2 class="section-title">Ready to Go Solar?</h2>
+<section class="cta">
+  <div class="cta-bg">SOLAR</div>
+  <div class="cta-in reveal">
+    <div class="stag" style="justify-content:center">Start Your Journey</div>
+    <h2 class="stitle">Ready to Go Solar?</h2>
     <p>Let's design the perfect renewable energy solution for your home, business, or project. Get in touch today.</p>
     <div class="cta-btns">
-      <a href="https://chybonsolarenergy.com/contact-us/" class="btn-primary">Get a Free Quote</a>
-      <a href="mailto:info@chybonsolarenergy.com" class="btn-ghost">Send an Email</a>
+      <a href="#booking" class="btn-p">Get a Free Quote</a>
+      <a href="/cdn-cgi/l/email-protection#61080f070e21020918030e0f120e0d0013040f041306184f020e0c" class="btn-g">Send an Email</a>
     </div>
     <a href="tel:+2347071117403" class="cta-phone">+234 707 111 7403</a>
   </div>
@@ -520,170 +655,97 @@ footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2r
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/07/cropped-WhatsApp_Image_2024-07-26_at_23.52.01-removebg-preview-1.png" alt="Chybonsolar" style="height:44px;opacity:.8" onerror="this.style.display='none'"/>
+  <div class="ftop">
+    <div class="fbrand">
+      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/07/cropped-WhatsApp_Image_2024-07-26_at_23.52.01-removebg-preview-1.png" alt="Logo" style="height:44px;opacity:.8" onerror="this.style.display='none'"/>
       <p>Trusted renewable energy provider across West Africa since 2000. Powering a greener tomorrow, one installation at a time.</p>
     </div>
-    <div class="footer-col">
-      <h5>Quick Links</h5>
-      <ul>
-        <li><a href="https://chybonsolarenergy.com/">Home</a></li>
-        <li><a href="https://chybonsolarenergy.com/about-us/">About Us</a></li>
-        <li><a href="https://chybonsolarenergy.com/why-choose-us/">Services</a></li>
-        <li><a href="https://chybonsolarenergy.com/try-home/">Gallery</a></li>
-        <li><a href="https://chybonsolarenergy.com/contact-us/">Contact</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Nigeria Office</h5>
-      <p>📞 +234-707-111-7403</p>
-      <p>📞 +234-701-638-2231</p>
-      <p>✉️ info@chybonsolarenergy.com</p>
-      <p style="margin-top:.6rem">Plot 9, Gbolahan Awe Close, Magodo Estate Phase II, Lagos</p>
-    </div>
-    <div class="footer-col">
-      <h5>Gambia Office</h5>
-      <p>📞 +220-755-8394</p>
-      <p>📞 +220-368-2700</p>
-      <p>✉️ gambia@chybonsolarenergy.com</p>
-      <p style="margin-top:.6rem">AU Summit Highway, Salagi, West Coast Region</p>
-    </div>
+    <div class="fcol"><h5>Quick Links</h5><ul><li><a href="#about">About Us</a></li><li><a href="#services">Services</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#calculator">Calculator</a></li><li><a href="#blog">Blog</a></li><li><a href="#booking">Book Appointment</a></li></ul></div>
+    <div class="fcol"><h5>Nigeria Office</h5><p>📞 +234-707-111-7403</p><p>📞 +234-701-638-2231</p><p>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cca5a2aaa38cafa4b5aea3a2bfa3a0adbea9a2a9beabb5e2afa3a1">[email&#160;protected]</a></p><p style="margin-top:.6rem">Plot 9, Gbolahan Awe Close, Magodo Phase II, Lagos</p></div>
+    <div class="fcol"><h5>Gambia Office</h5><p>📞 +220-755-8394</p><p>📞 +220-368-2700</p><p>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6f080e020d060e2f0c07160d00011c00030e1d0a010a1d0816410c0002">[email&#160;protected]</a></p><p style="margin-top:.6rem">AU Summit Highway, Salagi, West Coast Region</p></div>
   </div>
-  <div class="footer-bottom">
+  <div class="fbot">
     <p>© 2025 Chybonsolar Energy Limited. All rights reserved.</p>
-    <div class="footer-logo">
-      <img src="https://chybonsolarenergy.com/wp-content/uploads/2024/07/cropped-WhatsApp_Image_2024-07-26_at_23.52.01-removebg-preview-1.png" alt="Logo" onerror="this.style.display='none'"/>
-    </div>
+    <p style="font-size:11px">Powered by clean energy ☀️</p>
   </div>
 </footer>
 
-<!-- SCROLL TO TOP -->
-<button class="scrolltop" id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<!-- WHATSAPP -->
+<a href="https://wa.me/2347071117403?text=Hello%20Chybonsolar%2C%20I%20am%20interested%20in%20your%20solar%20services." class="wa" target="_blank">
+  <div class="wa-tip">Chat on WhatsApp</div>
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<button class="stbtn" id="stbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script>
-// ── HERO SLIDESHOW ──
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-const dots = document.querySelectorAll('.dot');
-const slideNum = document.getElementById('slideNum');
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// PRELOADER
+let pct=0;
+const preBar=document.getElementById('preBar'),prePct=document.getElementById('prePct');
+const pt=setInterval(()=>{pct+=Math.random()*15;if(pct>=100){pct=100;clearInterval(pt);setTimeout(()=>document.getElementById('preloader').classList.add('done'),400)}preBar.style.width=pct+'%';prePct.textContent=Math.floor(pct)+'%'},100);
 
-function goToSlide(n) {
-  slides[currentSlide].classList.remove('active');
-  dots[currentSlide].classList.remove('active');
-  currentSlide = (n + slides.length) % slides.length;
-  slides[currentSlide].classList.add('active');
-  dots[currentSlide].classList.add('active');
-  slideNum.textContent = String(currentSlide + 1).padStart(2, '0');
-}
-setInterval(() => goToSlide(currentSlide + 1), 5000);
+// HERO SLIDESHOW
+let cs=0;const sl=document.querySelectorAll('.slide'),dt=document.querySelectorAll('.dot'),sn=document.getElementById('snum');
+function goSlide(n){sl[cs].classList.remove('active');dt[cs].classList.remove('active');cs=(n+sl.length)%sl.length;sl[cs].classList.add('active');dt[cs].classList.add('active');sn.textContent=String(cs+1).padStart(2,'0')}
+setInterval(()=>goSlide(cs+1),5000);
 
-// ── NAV SCROLL ──
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
-  document.getElementById('scrolltop').classList.toggle('visible', window.scrollY > 400);
+// PARTICLES
+const cv=document.getElementById('pcanvas'),cx=cv.getContext('2d');
+let pts=[];
+function resize(){cv.width=window.innerWidth;cv.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<50;i++)pts.push({x:Math.random()*cv.width,y:Math.random()*cv.height,r:Math.random()*1.5+.3,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,o:Math.random()*.5+.1});
+function drawPts(){cx.clearRect(0,0,cv.width,cv.height);pts.forEach(p=>{cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fillStyle=`rgba(76,217,100,${p.o})`;cx.fill();p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cv.width)p.vx*=-1;if(p.y<0||p.y>cv.height)p.vy*=-1});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=`rgba(76,217,100,${.1*(1-d/120)})`;cx.lineWidth=.5;cx.stroke()}}requestAnimationFrame(drawPts)}
+drawPts();
+
+// NAV + SCROLL
+const nav=document.getElementById('nav');
+const secs=document.querySelectorAll('section[id]');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>60);
+  document.getElementById('stbtn').classList.toggle('visible',window.scrollY>400);
+  let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  document.querySelectorAll('.nav-links a').forEach(a=>{a.classList.remove('active');if(a.getAttribute('href')==='#'+cur)a.classList.add('active')});
 });
 
-// ── SCROLL REVEAL ──
-const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-revealEls.forEach(el => observer.observe(el));
+// THEME
+document.getElementById('themeBtn').addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=dark?'light':'dark';document.getElementById('themeBtn').textContent=dark?'🌙':'☀️'});
 
-// ── COUNTER ANIMATION ──
-function animateCounter(el) {
-  const target = parseInt(el.dataset.target);
-  const suffix = el.parentElement.querySelector('.stat-label, .band-label')?.textContent.includes('%') ? '+' : '+';
-  let current = 0;
-  const step = Math.ceil(target / 60);
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = current;
-    if (current >= target) {
-      el.textContent = target + (el.dataset.target === '90' ? '%' : '+');
-      clearInterval(timer);
-    }
-  }, 25);
-}
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting && !e.target.dataset.counted) {
-      e.target.dataset.counted = '1';
-      animateCounter(e.target);
-    }
-  });
-}, { threshold: 0.5 });
-document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+// MOBILE MENU
+function toggleMenu(){document.getElementById('mMenu').classList.toggle('open')}
+function closeMenu(){document.getElementById('mMenu').classList.remove('open')}
 
-// ── GALLERY LIGHTBOX ──
-const galleryImgs = [
-  'https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875685-scaled.jpg',
-  'https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-erod-photos-1023772446-20844067-1-scaled.jpg',
-  'https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875676-scaled.jpg',
-  'https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799714-scaled.jpg',
-  'https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799727-scaled.jpg',
-];
-let lbIndex = 0;
-function openLightbox(i) {
-  lbIndex = i;
-  document.getElementById('lightboxImg').src = galleryImgs[i];
-  document.getElementById('lightboxCounter').textContent = (i + 1) + ' / ' + galleryImgs.length;
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function lightboxNav(dir) {
-  lbIndex = (lbIndex + dir + galleryImgs.length) % galleryImgs.length;
-  document.getElementById('lightboxImg').src = galleryImgs[lbIndex];
-  document.getElementById('lightboxCounter').textContent = (lbIndex + 1) + ' / ' + galleryImgs.length;
-}
-document.getElementById('lightbox').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('lightbox')) closeLightbox();
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') lightboxNav(-1);
-  if (e.key === 'ArrowRight') lightboxNav(1);
-});
+// SCROLL REVEAL
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.rl,.rr').forEach(el=>obs.observe(el));
 
-// ── TESTIMONIALS SLIDER ──
-let testiIndex = 0;
-const track = document.getElementById('testiTrack');
-const bar = document.getElementById('testiBar');
-const totalTestis = 4;
-function updateTesti() {
-  const cardW = track.querySelector('.testi-card').offsetWidth + 24;
-  track.style.transform = `translateX(-${testiIndex * cardW}px)`;
-  bar.style.width = ((testiIndex + 1) / totalTestis * 100) + '%';
-}
-function testiNav(dir) {
-  testiIndex = Math.max(0, Math.min(testiIndex + dir, totalTestis - 1));
-  updateTesti();
-}
-let testiAuto = setInterval(() => {
-  testiIndex = (testiIndex + 1) % totalTestis;
-  updateTesti();
-}, 5000);
-document.getElementById('testiTrack').addEventListener('mouseenter', () => clearInterval(testiAuto));
+// COUNTERS
+function animNum(el){const t=parseInt(el.dataset.target),is90=t===90;let c=0;const step=Math.ceil(t/60);const ti=setInterval(()=>{c=Math.min(c+step,t);el.textContent=c+(is90?'%':'+');if(c>=t)clearInterval(ti)},25)}
+const cobs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!e.target.dataset.done){e.target.dataset.done='1';animNum(e.target)}})},{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>cobs.observe(el));
 
-// Mobile menu
-function toggleMenu() {
-  const links = document.querySelector('.nav-links');
-  if (!links) return;
-  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-  links.style.flexDirection = 'column';
-  links.style.position = 'fixed';
-  links.style.top = '70px';
-  links.style.left = '0';
-  links.style.right = '0';
-  links.style.background = 'rgba(11,15,14,0.98)';
-  links.style.padding = '1.5rem 5vw';
-  links.style.borderBottom = '1px solid #1e2d28';
+// LIGHTBOX
+const lbImgs=['https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875685-scaled.jpg','https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-erod-photos-1023772446-20844067-1-scaled.jpg','https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9875676-scaled.jpg','https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799714-scaled.jpg','https://chybonsolarenergy.com/wp-content/uploads/2024/08/pexels-kindelmedia-9799727-scaled.jpg'];
+let li=0;
+function openLB(i){li=i;document.getElementById('lbImg').src=lbImgs[i];document.getElementById('lbCtr').textContent=(i+1)+' / '+lbImgs.length;document.getElementById('lbox').classList.add('open');document.body.style.overflow='hidden'}
+function closeLB(){document.getElementById('lbox').classList.remove('open');document.body.style.overflow=''}
+function lbNav(d){li=(li+d+lbImgs.length)%lbImgs.length;document.getElementById('lbImg').src=lbImgs[li];document.getElementById('lbCtr').textContent=(li+1)+' / '+lbImgs.length}
+document.getElementById('lbox').addEventListener('click',e=>{if(e.target===document.getElementById('lbox'))closeLB()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLB();if(e.key==='ArrowLeft')lbNav(-1);if(e.key==='ArrowRight')lbNav(1)});
+
+// TESTIMONIALS
+let ti2=0;const tt=document.getElementById('ttrack'),tpb=document.getElementById('tpbar');
+function updateT(){const w=tt.querySelector('.tcard').offsetWidth+24;tt.style.transform=`translateX(-${ti2*w}px)`;tpb.style.width=((ti2+1)/4*100)+'%'}
+function tNav(d){ti2=Math.max(0,Math.min(ti2+d,3));updateT()}
+let ta=setInterval(()=>{ti2=(ti2+1)%4;updateT()},5000);
+tt.addEventListener('mouseenter',()=>clearInterval(ta));
+tt.addEventListener('mouseleave',()=>{ta=setInterval(()=>{ti2=(ti2+1)%4;updateT()},5000)});
+
+// CALCULATOR
+function addRow(){
+  const r=document.createElement('div');r.className='calc-row';
+  r.innerHTML=`<select onchange="calcUpdate()"><option>TV</option><option>Fan</option><option>Fridge</option><option>Air Conditioner</option><option>Laptop</option><option>Phone Charger</option><option>Light Bulb</option><option>Microwave</option><option>Water Pump</option><option>Security Light</option></select><input type="number" value="60" min="0" oninput="calcUpdate()"/><input type="number" value="4" min="0" max="24" oninput="calcUpdate()"/><input type="number" value="1" min="1" oninput="calcUpdate()"/><button class="calc-rm" onclick="this.parentElement.remove();calcUpdate()">✕</button>`;
+  document.getElementById('calcRows').appendChild(r);calcUpdate();
 }
-</script>
-</body>
-</html>
+function calcUpdate(){
+  let total=0;
+  document.querySelectorAll('#calcRows .calc
