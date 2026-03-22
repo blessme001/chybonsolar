@@ -13,19 +13,7 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--body);font-weight:300;line-height:1.7;overflow-x:hidden;font-size:15px;transition:background .4s,color .4s}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--green);border-radius:2px}
 
-/* PRELOADER */
-#preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
-#preloader.done{opacity:0;visibility:hidden}
-.pre-logo{font-family:var(--heading);font-size:2.5rem;color:var(--text);margin-bottom:2rem;letter-spacing:2px}
-.pre-logo span{color:var(--green)}
-.pre-sun{width:64px;height:64px;margin-bottom:1.5rem;position:relative;display:flex;align-items:center;justify-content:center}
-.pre-core{width:22px;height:22px;background:var(--green);border-radius:50%;animation:pcore 1.4s ease-in-out infinite}
-@keyframes pcore{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
-.pre-ring{position:absolute;width:50px;height:50px;border:2px dashed rgba(76,217,100,.3);border-radius:50%;animation:spin 3s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.pre-bar-wrap{width:220px;height:2px;background:var(--border);border-radius:1px}
-.pre-bar{height:100%;background:var(--green);width:0%;border-radius:1px}
-.pre-pct{font-size:11px;color:var(--muted);letter-spacing:2px;margin-top:.8rem}
+
 
 /* NAV */
 .nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:70px;transition:all .4s}
@@ -331,13 +319,7 @@ footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2r
 </head>
 <body>
 
-<!-- PRELOADER -->
-<div id="preloader">
-  <div class="pre-sun"><div class="pre-core"></div><div class="pre-ring"></div></div>
-  <div class="pre-logo">CHYBON<span>SOLAR</span></div>
-  <div class="pre-bar-wrap"><div class="pre-bar" id="preBar"></div></div>
-  <div class="pre-pct" id="prePct">0%</div>
-</div>
+
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -584,7 +566,7 @@ footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2r
       <p>Whether you're a homeowner, business, or organisation, our experts are ready to design the perfect renewable energy solution for you. Book a free consultation today.</p>
       <div class="bci"><span>📞</span><a href="tel:+2347071117403">+234-707-111-7403</a></div>
       <div class="bci"><span>📞</span><a href="tel:+2347016382231">+234-701-638-2231</a></div>
-      <div class="bci"><span>✉️</span><a href="/cdn-cgi/l/email-protection#e980878f86a98a81908b86879a8685889b8c878c9b8e90c78a8684"><span class="__cf_email__" data-cfemail="51383f373e11323928333e3f223e3d3023343f342336287f323e3c">[email&#160;protected]</span></a></div>
+      <div class="bci"><span>✉️</span><a href="mailto:info@chybonsolarenergy.com">info@chybonsolarenergy.com</a></div>
       <div class="bci"><span>📍</span><p>Plot 9, Gbolahan Awe Close, Magodo Estate Phase II, Lagos</p></div>
       <div class="bci"><span>📍</span><p>AU Summit Highway, Salagi, West Coast Region, The Gambia</p></div>
     </div>
@@ -624,11 +606,11 @@ footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2r
     <div class="rr" style="display:flex;flex-direction:column;gap:1.2rem">
       <div style="background:var(--card);border:1px solid var(--border);padding:2rem">
         <h4 style="font-family:var(--heading);font-size:1.3rem;color:var(--text);margin-bottom:1rem">Nigeria Office</h4>
-        <p style="font-size:13px;color:var(--muted);line-height:2">📞 +234-707-111-7403<br/>📞 +234-701-638-2231<br/>📞 +234-703-377-8865<br/>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3950575f56795a51405b56574a5655584b5c575c4b5e40175a5654">[email&#160;protected]</a><br/>📍 Plot 9, Gbolahan Awe Close, Magodo Estate Phase II, Lagos</p>
+        <p style="font-size:13px;color:var(--muted);line-height:2">📞 +234-707-111-7403<br/>📞 +234-701-638-2231<br/>📞 +234-703-377-8865<br/>✉️ info@chybonsolarenergy.com<br/>📍 Plot 9, Gbolahan Awe Close, Magodo Estate Phase II, Lagos</p>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);padding:2rem">
         <h4 style="font-family:var(--heading);font-size:1.3rem;color:var(--text);margin-bottom:1rem">Gambia Office</h4>
-        <p style="font-size:13px;color:var(--muted);line-height:2">📞 +220-755-8394<br/>📞 +220-368-2700<br/>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0b6c6a6669626a4b6863726964657864676a796e656e796c7225686466">[email&#160;protected]</a><br/>📍 AU Summit Highway, Salagi, West Coast Region, The Gambia</p>
+        <p style="font-size:13px;color:var(--muted);line-height:2">📞 +220-755-8394<br/>📞 +220-368-2700<br/>✉️ gambia@chybonsolarenergy.com<br/>📍 AU Summit Highway, Salagi, West Coast Region, The Gambia</p>
       </div>
       <a href="https://wa.me/2347071117403" style="background:var(--green);padding:1.5rem;text-align:center;text-decoration:none;display:block">
         <p style="font-family:var(--heading);font-size:1.4rem;color:#0b0f0e">WhatsApp Us Directly</p>
@@ -647,7 +629,7 @@ footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2r
     <p>Let's design the perfect renewable energy solution for your home, business, or project. Get in touch today.</p>
     <div class="cta-btns">
       <a href="#booking" class="btn-p">Get a Free Quote</a>
-      <a href="/cdn-cgi/l/email-protection#61080f070e21020918030e0f120e0d0013040f041306184f020e0c" class="btn-g">Send an Email</a>
+      <a href="mailto:info@chybonsolarenergy.com" class="btn-g">Send an Email</a>
     </div>
     <a href="tel:+2347071117403" class="cta-phone">+234 707 111 7403</a>
   </div>
@@ -661,8 +643,8 @@ footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2r
       <p>Trusted renewable energy provider across West Africa since 2000. Powering a greener tomorrow, one installation at a time.</p>
     </div>
     <div class="fcol"><h5>Quick Links</h5><ul><li><a href="#about">About Us</a></li><li><a href="#services">Services</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#calculator">Calculator</a></li><li><a href="#blog">Blog</a></li><li><a href="#booking">Book Appointment</a></li></ul></div>
-    <div class="fcol"><h5>Nigeria Office</h5><p>📞 +234-707-111-7403</p><p>📞 +234-701-638-2231</p><p>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cca5a2aaa38cafa4b5aea3a2bfa3a0adbea9a2a9beabb5e2afa3a1">[email&#160;protected]</a></p><p style="margin-top:.6rem">Plot 9, Gbolahan Awe Close, Magodo Phase II, Lagos</p></div>
-    <div class="fcol"><h5>Gambia Office</h5><p>📞 +220-755-8394</p><p>📞 +220-368-2700</p><p>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6f080e020d060e2f0c07160d00011c00030e1d0a010a1d0816410c0002">[email&#160;protected]</a></p><p style="margin-top:.6rem">AU Summit Highway, Salagi, West Coast Region</p></div>
+    <div class="fcol"><h5>Nigeria Office</h5><p>📞 +234-707-111-7403</p><p>📞 +234-701-638-2231</p><p>✉️ info@chybonsolarenergy.com</p><p style="margin-top:.6rem">Plot 9, Gbolahan Awe Close, Magodo Phase II, Lagos</p></div>
+    <div class="fcol"><h5>Gambia Office</h5><p>📞 +220-755-8394</p><p>📞 +220-368-2700</p><p>✉️ gambia@chybonsolarenergy.com</p><p style="margin-top:.6rem">AU Summit Highway, Salagi, West Coast Region</p></div>
   </div>
   <div class="fbot">
     <p>© 2025 Chybonsolar Energy Limited. All rights reserved.</p>
@@ -677,12 +659,7 @@ footer{background:#080c0b;border-top:1px solid var(--border);padding:4rem 5vw 2r
 </a>
 <button class="stbtn" id="stbtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// PRELOADER
-let pct=0;
-const preBar=document.getElementById('preBar'),prePct=document.getElementById('prePct');
-const pt=setInterval(()=>{pct+=Math.random()*15;if(pct>=100){pct=100;clearInterval(pt);setTimeout(()=>document.getElementById('preloader').classList.add('done'),400)}preBar.style.width=pct+'%';prePct.textContent=Math.floor(pct)+'%'},100);
-
+<script>
 // HERO SLIDESHOW
 let cs=0;const sl=document.querySelectorAll('.slide'),dt=document.querySelectorAll('.dot'),sn=document.getElementById('snum');
 function goSlide(n){sl[cs].classList.remove('active');dt[cs].classList.remove('active');cs=(n+sl.length)%sl.length;sl[cs].classList.add('active');dt[cs].classList.add('active');sn.textContent=String(cs+1).padStart(2,'0')}
@@ -748,4 +725,20 @@ function addRow(){
 }
 function calcUpdate(){
   let total=0;
-  document.querySelectorAll('#calcRows .calc
+  document.querySelectorAll('#calcRows .calc-row').forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    if(ins.length>=3)total+=(parseFloat(ins[0].value)||0)*(parseFloat(ins[1].value)||0)*(parseFloat(ins[2].value)||1)/1000;
+  });
+  document.getElementById('calcTotal').innerHTML=total.toFixed(2)+'<small>kWh per day</small>';
+  document.getElementById('cBat').textContent=Math.ceil(total*1.5*2)+' Ah (12V)';
+  document.getElementById('cPanel').textContent=Math.ceil(total*1.25/5*1000)+'W';
+  document.getElementById('cInv').textContent=Math.ceil(total*.5*1000)+'W';
+  document.getElementById('cSave').textContent='₦'+Math.ceil(total*30*85).toLocaleString()+'/month';
+}
+calcUpdate();
+
+// FORM SUBMIT
+function submitForm(id){const el=document.getElementById(id);el.style.display='block';setTimeout(()=>el.style.display='none',5000)}
+</script>
+</body>
+</html>
